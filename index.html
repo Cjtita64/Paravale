@@ -93,76 +93,206 @@
 
         .ws-link { background: #25D366; color: white; margin-top: 15px; display: none; }
 
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
-        @keyframes slideIn { from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);} }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti ❤️</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --pink: #ff4d6d;
+            --light: #fff0f3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #welcome {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .heart-btn {
+            font-size: 80px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .card {
+            width: 90%;
+            max-width: 380px;
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            text-align: center;
+            display: none;
+            animation: slideIn 0.8s ease;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink);
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        #text {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.6;
+            min-height: 100px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        button, .ws-link {
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .si { background: var(--pink); color: white; }
+        .espera { background: #ffb703; color: white; }
+        .no { background: #adb5bd; color: white; position: absolute; width: 80px; }
+
+        .ws-link {
+            background: #25D366;
+            color: white;
+            margin-top: 15px;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% {transform: scale(1);}
+            50% {transform: scale(1.1);}
+            100% {transform: scale(1);}
+        }
+
+        @keyframes slideIn {
+            from {opacity: 0; transform: translateY(30px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
     </style>
 </head>
 <body>
 
-    <audio id="musica" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+<!-- PANTALLA INICIAL -->
+<div id="welcome" onclick="abrir()">
+    <div class="heart-btn">💝</div>
+    <p style="color:#ff4d6d;">Toca para abrir tu mensaje</p>
+</div>
 
-    <div id="welcome" onclick="abrir()">
-        <div class="heart-btn">💝</div>
-        <p style="color: #ff4d6d;">Toca para abrir tu mensaje</p>
+<!-- TARJETA -->
+<div class="card" id="card">
+    <h1>Para alguien especial...</h1>
+    <p id="text"></p>
+
+    <div class="buttons" id="btnContainer">
+        <button class="si" onclick="aceptar()">¡Sí, quiero! ❤️</button>
+        <button class="espera" onclick="esperar()">Aún no es el momento ⏳</button>
+        <button class="no" id="btnNo" onmouseover="huir()">No</button>
     </div>
 
-    <div class="card" id="card">
-        <h1>Para alguien especial...</h1>
-        <p id="text"></p>
-        
-        <div class="buttons" id="btnContainer">
-            <button class="si" onclick="aceptar()">¡Sí, quiero! ❤️</button>
-            <button class="espera" onclick="esperar()">Aún no es el momento ⏳</button>
-            <button class="no" id="btnNo" onmouseover="huir()" onclick="huir()">No</button>
-        </div>
+    <a id="ws"
+       href="https://wa.me/51910446001?text=¡Sí acepto! ❤️"
+       class="ws-link">¡Díselo por WhatsApp! 📱</a>
+</div>
 
-        <a id="ws" href="https://wa.me/51910446001?text=¡Sí acepto! ❤️" class="ws-link">¡Díselo por WhatsApp! 📱</a>
-    </div>
+<!-- YOUTUBE OCULTO -->
+<iframe
+  id="ytplayer"
+  width="0"
+  height="0"
+  src="https://www.youtube.com/embed/IbE7peGTpmc?enablejsapi=1"
+  frameborder="0"
+  allow="autoplay">
+</iframe>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-        const mensaje = "Vale, tal vez es muy pronto para decirte esto, pero la neta me gustas y quiero estar contigo... ¿Me darías la oportunidad?";
-        let index = 0;
-        let escribiendo = true;
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-        function abrir() {
-            document.getElementById('welcome').style.display = 'none';
-            document.getElementById('card').style.display = 'block';
-            document.getElementById('musica').play();
-            escribir();
+<script>
+    const mensaje = "Vale, tal vez es muy pronto para decirte esto, pero la neta me gustas y quiero estar contigo... ¿Me darías la oportunidad?";
+    let index = 0;
+    let escribiendo = true;
+    let player;
+
+    function escribir() {
+        if (index < mensaje.length && escribiendo) {
+            document.getElementById("text").innerHTML += mensaje.charAt(index);
+            index++;
+            setTimeout(escribir, 50);
         }
+    }
 
-        function escribir() {
-            if (index < mensaje.length && escribiendo) {
-                document.getElementById('text').innerHTML += mensaje.charAt(index);
-                index++;
-                setTimeout(escribir, 50);
-            }
-        }
+    function abrir() {
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("card").style.display = "block";
 
-        function aceptar() {
-            escribiendo = false;
-            document.getElementById('text').innerHTML = "¡Me haces la persona más feliz! ✨ Prometo cuidarte siempre.";
-            document.getElementById('btnContainer').style.display = 'none';
-            document.getElementById('ws').style.display = 'block';
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        }
+        if (player) player.playVideo();
+        escribir();
+    }
 
-        function esperar() {
-            escribiendo = false;
-            document.getElementById('text').innerHTML = "Entiendo... 😊 No hay prisa, esperaré el tiempo que sea necesario por ti.";
-            document.getElementById('btnContainer').style.display = 'none';
-        }
+    function aceptar() {
+        escribiendo = false;
+        document.getElementById("text").innerHTML =
+            "¡Me haces la persona más feliz! ✨ Prometo cuidarte siempre.";
+        document.getElementById("btnContainer").style.display = "none";
+        document.getElementById("ws").style.display = "block";
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    }
 
-        function huir() {
-            const btn = document.getElementById('btnNo');
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
-        }
-    </script>
+    function esperar() {
+        escribiendo = false;
+        document.getElementById("text").innerHTML =
+            "Entiendo... 😊 No hay prisa, esperaré el tiempo que sea necesario por ti.";
+        document.getElementById("btnContainer").style.display = "none";
+    }
+
+    function huir() {
+        const btn = document.getElementById("btnNo");
+        btn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        btn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    }
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player("ytplayer");
+    }
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+</script>
+
 </body>
 </html>
